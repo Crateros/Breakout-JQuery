@@ -5,10 +5,10 @@ $( document ).ready(function() {
   //BEGIN LIBRARY CODE
   var x = 75;
   var y = 150;
-  var dx = 2;
-  var dy = 4;
+  var dx = 0;
+  var dy = 0;
   var gameBarHeight = 5;
-  var gameBarWidth = 90;
+  var gameBarWidth = 10;
   var gameBarXPosition;
   var WIDTH;
   var HEIGHT;
@@ -56,10 +56,16 @@ $( document ).ready(function() {
 
     //Move gameBar left on left arrow press
     if (leftKeyDown) {
-      gameBarXPosition -= 6;
+      if (gameBarXPosition > 0) {
+        console.log(gameBarXPosition);
+        gameBarXPosition -= 1;
+      }
     }
     else if (rightKeyDown) {
-      gameBarXPosition += 6;
+      if (gameBarXPosition < 290) {
+        console.log(gameBarXPosition);
+        gameBarXPosition += 1;
+      }
     }
     rect(gameBarXPosition, HEIGHT-gameBarHeight - 5, gameBarWidth, gameBarHeight);
     // If x-axis collision
@@ -93,12 +99,12 @@ $( document ).ready(function() {
     //Left press
     if (downPress.keyCode == 37) {
       leftKeyDown = true;
-      console.log(leftKeyDown)
+      // console.log(leftKeyDown)
     }
     //Right press
     else if (downPress.keyCode == 39) {
       rightKeyDown = true;
-      console.log(rightKeyDown)
+      // console.log(rightKeyDown)
     }
   }
   $(document).keydown(downKeyPress);
@@ -107,12 +113,12 @@ $( document ).ready(function() {
     //Left up
     if (liftUp.keyCode == 37) {
       leftKeyDown = false;
-      console.log(leftKeyDown);
+      // console.log(leftKeyDown);
     }
     //Right up
     if (liftUp.keyCode == 39) {
       rightKeyDown = false;
-      console.log(rightKeyDown)
+      // console.log(rightKeyDown)
     }
   }
   $(document).keyup(liftKeyPress);
