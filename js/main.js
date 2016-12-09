@@ -3,7 +3,7 @@ console.log("JQ IS ALIVE");
 $( document ).ready(function() {
 
   //BEGIN LIBRARY CODE
-  var x = 150;
+  var x = 75;
   var y = 150;
   var dx = 2;
   var dy = 4;
@@ -56,20 +56,21 @@ $( document ).ready(function() {
 
     //Move gameBar left on left arrow press
     if (leftKeyDown) {
-      gameBarXPosition -= 3;
+      gameBarXPosition -= 6;
     }
     else if (rightKeyDown) {
-      gameBarXPosition += 3;
+      gameBarXPosition += 6;
     }
     rect(gameBarXPosition, HEIGHT-gameBarHeight - 5, gameBarWidth, gameBarHeight);
     // If x-axis collision
-    if (x + dx > WIDTH || x + dx < 0){
+    if (x + dx + Math.PI*2 >= WIDTH || x + dx <= 0 + Math.PI*2){
       dx = -dx;
-      dx++;
+      dx+= 0.5;
     }
-    if (y + dy < 0) {
+    if (y + dy <= 0 + Math.PI*2) {
       dy = -dy;
-      dy++;
+      //Acceleration on y-axis collision
+      dy+= 0.5;
     }
     else if (y + dy > HEIGHT) {
       if (x > gameBarXPosition && x < gameBarXPosition + gameBarWidth) {
