@@ -74,17 +74,37 @@ $( document ).ready(function() {
     y += dy;
   }
 
-  var rightDown = false;
-  var leftDown = false;
+  var rightKeyDown = false;
+  var leftKeyDown = false;
 
-  //Setup left and right arrow keys
+  //Setup left and right arrow keys down press
   function downKeyPress(downPress) {
-    //Left Press
+    //Left press
     if (downPress.keyCode === 37) {
-      rightDown = true;
+      leftKeyDown = true;
+      console.log(leftKeyDown)
+    }
+    //Right press
+    else if (downPress.keyCode === 39) {
+      rightKeyDown = true;
+      console.log(rightKeyDown)
     }
   }
-
+  $(document).keydown(downKeyPress);
+  //Setup left and right arrow key press lift off
+  function liftKeyPress(liftUp) {
+    //Left up
+    if (liftUp.keyCode == 37) {
+      leftKeyDown = false;
+      console.log(leftKeyDown);
+    }
+    //Right up
+    if (liftUp.keyCode == 39) {
+      rightKeyDown = false;
+      console.log(rightKeyDown)
+    }
+  }
+  $(document).keyup(liftKeyPress);
   //Get arrow key IDs
   //        function checkKey(e) {
   //           e = e || window.event;
