@@ -4,7 +4,7 @@ $( document ).ready(function() {
 
   //BEGIN LIBRARY CODE
   var x = 150;
-  var y = 280;
+  var y = 150;
   var dx = 2;
   var dy = 4;
   var gameBarHeight = 5;
@@ -14,6 +14,8 @@ $( document ).ready(function() {
   var HEIGHT;
   var ctx;
   var intervalId = 0;
+  var rightKeyDown = false;
+  var leftKeyDown = false;
 
   function doMotion() {
     ctx = $('#canvas')[0].getContext("2d");
@@ -51,6 +53,14 @@ $( document ).ready(function() {
   function drawShapes() {
     clear();
     circle(x, y, 10);
+
+    //Move gameBar left on left arrow press
+    if (leftKeyDown) {
+      gameBarXPosition -= 3;
+    }
+    else if (rightKeyDown) {
+      gameBarXPosition += 3;
+    }
     rect(gameBarXPosition, HEIGHT-gameBarHeight - 5, gameBarWidth, gameBarHeight);
     // If x-axis collision
     if (x + dx > WIDTH || x + dx < 0){
@@ -74,18 +84,18 @@ $( document ).ready(function() {
     y += dy;
   }
 
-  var rightKeyDown = false;
-  var leftKeyDown = false;
+  // var rightKeyDown = false;
+  // var leftKeyDown = false;
 
   //Setup left and right arrow keys down press
   function downKeyPress(downPress) {
     //Left press
-    if (downPress.keyCode === 37) {
+    if (downPress.keyCode == 37) {
       leftKeyDown = true;
       console.log(leftKeyDown)
     }
     //Right press
-    else if (downPress.keyCode === 39) {
+    else if (downPress.keyCode == 39) {
       rightKeyDown = true;
       console.log(rightKeyDown)
     }
@@ -105,6 +115,11 @@ $( document ).ready(function() {
     }
   }
   $(document).keyup(liftKeyPress);
+
+
+  //Draw new gameBar on downKeyPress
+
+
   //Get arrow key IDs
   //        function checkKey(e) {
   //           e = e || window.event;
@@ -126,3 +141,22 @@ $( document ).ready(function() {
 
 
 });
+
+
+
+
+
+
+
+
+//Get arrow key IDs
+//        function checkKey(e) {
+//           e = e || window.event;
+//             console.log(e.keyCode);
+//        }
+//
+//       document.onkeydown = checkKey;
+//Arrow up is 38
+//Arrow down is 40
+//Arrow left is 37
+//Arrow right is 39
