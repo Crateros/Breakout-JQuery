@@ -5,10 +5,11 @@ $( document ).ready(function() {
   //BEGIN LIBRARY CODE
   var x = 75;
   var y = 150;
-  var dx = 0;
-  var dy = 0;
+  //Try math.random dx or dy for more unpredictable results
+  var dx = 3.1;
+  var dy = 5.7;
   var gameBarHeight = 5;
-  var gameBarWidth = 10;
+  var gameBarWidth = 35;
   var gameBarXPosition;
   var WIDTH;
   var HEIGHT;
@@ -22,7 +23,7 @@ $( document ).ready(function() {
     WIDTH = $("#canvas").width();
     HEIGHT = $("#canvas").height();
     gameBarXPosition = WIDTH / 2;
-    intervalId = setInterval(drawShapes, 50);
+    intervalId = setInterval(drawShapes, 80);
   }
 
   function circle(x,y,r) {
@@ -57,26 +58,26 @@ $( document ).ready(function() {
     //Move gameBar left on left arrow press
     if (leftKeyDown) {
       if (gameBarXPosition > 0) {
-        console.log(gameBarXPosition);
-        gameBarXPosition -= 1;
+        // console.log(gameBarXPosition);
+        gameBarXPosition -= 5;
       }
     }
     else if (rightKeyDown) {
       if (gameBarXPosition < 290) {
-        console.log(gameBarXPosition);
-        gameBarXPosition += 1;
+        // console.log(gameBarXPosition);
+        gameBarXPosition += 5;
       }
     }
     rect(gameBarXPosition, HEIGHT-gameBarHeight - 5, gameBarWidth, gameBarHeight);
     // If x-axis collision
     if (x + dx + Math.PI*2 >= WIDTH || x + dx <= 0 + Math.PI*2){
       dx = -dx;
-      dx+= 0.5;
+      dx+= 0.37;
     }
     if (y + dy <= 0 + Math.PI*2) {
       dy = -dy;
       //Acceleration on y-axis collision
-      dy+= 0.5;
+      dy+= 0.131;
     }
     else if (y + dy > HEIGHT) {
       if (x > gameBarXPosition && x < gameBarXPosition + gameBarWidth) {
