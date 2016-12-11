@@ -23,7 +23,7 @@ $( document ).ready(function() {
     WIDTH = $("#canvas").width();
     HEIGHT = $("#canvas").height();
     gameBarXPosition = WIDTH / 2;
-    intervalId = setInterval(drawShapes, 80);
+    intervalId = setInterval(drawShapes, 40);
   }
 
   function circle(x,y,r) {
