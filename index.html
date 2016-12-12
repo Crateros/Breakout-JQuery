@@ -1,14 +1,46 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="js/library.js"></script>
-    <script src="js/main.js"></script>
-    <title>BreakOut</title>
+    <!-- <script src="js/main.js"></script> -->
+    <title>BreakOut JQuery</title>
   </head>
+
   <body>
+    <!-- Game logo -->
+    <div class="logo">
+      <div class="score">
+        Score: 0
+      </div>
+      <div class ="playerLives">
+        <ul>
+          <li class="life"></li>
+          <li class="life"></li>
+          <li class="life"></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Game container -->
+    <div class="gameBox">
       <canvas id="canvas" width="300" height="300"></canvas>
+    </div>
+    <div class="gameInfo">
+  		<div class="instructions">
+  			<small>
+  				Use left and right keys or your mouse to move the game paddle.
+  				<br>
+  				Press spacebar to start the game.
+  			</small>
+  		</div>
+  	</div>
+
+
+
+  <script src="js/main.js"></script>
   </body>
+
 </html>

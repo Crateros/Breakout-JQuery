@@ -1,15 +1,15 @@
 console.log("JQ IS ALIVE");
 
-$( document ).ready(function() {
-
   var x = 25;
   var y = 250;
   //Try math.random dx or dy for more unpredictable results
   var dx = 1.5;
-  var dy = -4;
+  var dy = -1;
+  var ballRadius = 7
   var gameBarHeight = 7;
   var gameBarWidth = 75;
   var gameBarXPosition;
+  var gameBarColor = "#f4ad42";
   var WIDTH;
   var HEIGHT;
   var ctx;
@@ -20,12 +20,70 @@ $( document ).ready(function() {
   var canvasMaxX = 0;
   var bricks;
   var brickRows;
+  var rowColors = ["#468DF6", "#33A752", "#FF9900", "#ED3737", "#FB3EFF"];
   var brickColumns;
   var brickWidth;
   var brickHeight;
   var brickSpacing;
 
+  //Draw a circle
+  function circle(x,y,r) {
+    ctx.fillStyle =  "#FFFFFF";
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fill();
+  }
 
+  //Draw a rectangle
+  function rect(x,y,w,h) {
+    // ctx.fillStyle =  "#f4ad42";
+    ctx.beginPath();
+    ctx.rect(x,y,w,h);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  //Delete a rectangle
+  function clear() {
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  }
+
+  //KeyDown event
+  function downKeyPress(downPress) {
+    //Arrow Left press
+    if (downPress.keyCode == 37) {
+      leftKeyDown = true;
+    }
+    //Arrow Right press
+    else if (downPress.keyCode == 39) {
+      rightKeyDown = true;
+    }
+  }
+  $(document).keydown(downKeyPress);
+
+  //KeyUp event
+  function liftKeyPress(liftUp) {
+    //Arrow Left up
+    if (liftUp.keyCode == 37) {
+      leftKeyDown = false;
+    }
+    //Arrow Right up
+    if (liftUp.keyCode == 39) {
+      rightKeyDown = false;
+    }
+  }
+  $(document).keyup(liftKeyPress);
+
+  //Mouse support when mouseover canvas element
+  function onMouseMove(evt) {
+    if (evt.pageX > canvasMinX && evt.pageX < canvasMaxX - gameBarWidth) {
+      gameBarXPosition = evt.pageX - canvasMinX;
+    }
+  }
+  $(document).mousemove(onMouseMove);
+
+  //Animate shapes on interval
   function doMotion() {
     ctx = $('#canvas')[0].getContext("2d");
     WIDTH = $("#canvas").width();
@@ -33,159 +91,103 @@ $( document ).ready(function() {
     gameBarXPosition = WIDTH / 2;
     canvasMinX = $("#canvas").offset().left;
     canvasMaxX = canvasMinX + WIDTH;
-    intervalId = setInterval(drawShapes, 50);
+    intervalId = setInterval(drawShapes, 10);
   }
 
-  function bricks() {
+  //Create bricks array
+  function gameBricks() {
     brickRows = 5
     brickColumns = 5
     brickWidth = (WIDTH / brickColumns) - 1;
     brickHeight = 15;
     brickSpacing = 1;
     bricks = new Array(brickRows);
-    for (i = 0; i < brickRows.length; i++){
+    for (var i = 0; i < brickRows; i++){
       bricks[i] = new Array(brickColumns);
-      for (u= 0; u < brickColumns.length; u++){
+      for (var u = 0; u < brickColumns; u++){
         bricks[i][u] = 1;
       }
     }
   }
 
-  function circle(x,y,r) {
-    ctx.fillStyle =  "#00A308";
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, Math.PI*2, true);
-    ctx.closePath();
-    ctx.fill();
-  }
-
-  function rect(x,y,w,h) {
-    ctx.fillStyle =  "#f4ad42";
-    ctx.beginPath();
-    ctx.rect(x,y,w,h);
-    ctx.closePath();
-    ctx.fill();
-  }
-
-  function clear() {
-    ctx.clearRect(0, 0, WIDTH, HEIGHT);
-  }
-
-  function gameBar() {
-    gameBarX = WIDTH / 2;
-  }
-
+  //Draw shapes and feed to doMotion
   function drawShapes() {
     clear();
-    circle(x, y, 6);
-
-    //Make gameBar responsive to mouse input
-    function gameMouse() {
-      canvasMinX = $("#canvas").offset().left;
-      canvasMaxX = canvasMinX + WIDTH;
-    }
-
-    function onMouseMove(evt) {
-      if (evt.pageX > canvasMinX && evt.pageX < canvasMaxX - gameBarWidth) {
-        gameBarXPosition = evt.pageX - canvasMinX;
-      }
-    }
-
-    $(document).mousemove(onMouseMove);
-
+    circle(x, y, ballRadius);
     //Move gameBar left on left arrow press
     if (leftKeyDown) {
       if (gameBarXPosition > 0) {
         // console.log(gameBarXPosition);
-        gameBarXPosition -= 10;
+        gameBarXPosition -= 5;
       }
     }
     else if (rightKeyDown) {
       if (gameBarXPosition < 225) {
         // console.log(gameBarXPosition);
-        gameBarXPosition += 10;
+        gameBarXPosition += 5;
       }
     }
+    ctx.fillStyle = gameBarColor;
     rect(gameBarXPosition, HEIGHT-gameBarHeight - 5, gameBarWidth, gameBarHeight);
-    //Draw blocks for breaking
-    for (i = 0; i < brickRows.length; i++){
-      for (u = 0; u < brickColumns.length; u++){
+
+    //Draw from bricks array
+    for (var i = 0; i < brickRows; i++){
+      ctx.fillStyle = rowColors[i];
+      for (var u = 0; u < brickColumns; u++){
         if (bricks[i][u] == 1) {
           rect((u * (brickWidth + brickSpacing)) + brickSpacing, (i * (brickHeight + brickSpacing)) + brickSpacing, brickWidth, brickHeight);
         }
       }
     }
-    //Brick collision detection
     var rowHeight = brickHeight + brickSpacing;
     var columnWidth = brickWidth + brickSpacing;
     var row = Math.floor(y/rowHeight);
     var col = Math.floor(x/columnWidth);
+    //Brick collision detection
     if (y < brickRows * rowHeight && row >= 0 && col >= 0 && bricks[row][col] == 1) {
       dy = -dy;
       bricks[row][col] = 0;
     }
-    // If x-axis collision
-    if (x + dx + Math.PI*2 >= WIDTH || x + dx <= 0 + Math.PI*2){
+    //x-axis LEFT & RIGHT collision
+    if (x + dx + ballRadius > WIDTH || x + dx - ballRadius < 0){
       dx = -dx;
       //Acceleration on x-axis collision
       // if (dx <= 35) {
         // dx+= 3;
         // }
       }
-      if (y + dy <= 0 + Math.PI*2) {
-        dy = -dy;
-        //Acceleration on y-axis collision
-        if (dy <= 15) {
-          dy+= 2;
-        }
-      }
-    else if (y > 278 && y < 290 && x > gameBarXPosition && x < (gameBarXPosition + gameBarWidth)) {
+    //y-axis TOP collision
+    if (y + dy - ballRadius < 0) {
       dy = -dy;
+      //Acceleration on y-axis collision
+      // if (dy <= 15) {
+      //   dy+= 2;
+      // }
     }
-
-    else if (y + dy > HEIGHT) {
+    //gameBar collision
+    else if (y + dy + ballRadius > HEIGHT - gameBarHeight) {
+      if (x > gameBarXPosition && x <gameBarXPosition + gameBarWidth) {
+        //Alter dx based on collision position with gameBar
+        dx = 5 * ((x-(gameBarXPosition+gameBarWidth/2))/gameBarWidth);
+        dy = -dy;
+      }
+      else if (y > HEIGHT) {
       //Ball hit bottom, did not collide with gameBar
-      clearInterval(intervalId);
+        clearInterval(intervalId);
+      }
     }
-    x += Math.round(dx);
-    y += Math.round(dy);
-    // console.log(y);
+    x += dx;
+    y += dy;
   }
 
-  // var rightKeyDown = false;
-  // var leftKeyDown = false;
-
-  //Setup left and right arrow keys down press
-  function downKeyPress(downPress) {
-    //Left press
-    if (downPress.keyCode == 37) {
-      leftKeyDown = true;
-      // console.log(leftKeyDown)
-    }
-    //Right press
-    else if (downPress.keyCode == 39) {
-      rightKeyDown = true;
-      // console.log(rightKeyDown)
-    }
-  }
-  $(document).keydown(downKeyPress);
-  //Setup left and right arrow key press lift off
-  function liftKeyPress(liftUp) {
-    //Left up
-    if (liftUp.keyCode == 37) {
-      leftKeyDown = false;
-      // console.log(leftKeyDown);
-    }
-    //Right up
-    if (liftUp.keyCode == 39) {
-      rightKeyDown = false;
-      // console.log(rightKeyDown)
-    }
-  }
-  $(document).keyup(liftKeyPress);
+  doMotion();
+  gameBricks();
 
 
-  //Draw new gameBar on downKeyPress
+
+  // function gameBar() {
+  //   gameBarX = WIDTH / 2;
+  // }
 
 
   // Get arrow key IDs
@@ -201,11 +203,3 @@ $( document ).ready(function() {
   // Arrow right is 39
   // Enter is 13
   // Space is 32
-
-  doMotion();
-  gameBar();
-  bricks();
-
-});
-
-gameMouse();
