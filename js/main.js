@@ -2,11 +2,11 @@ console.log("JQ IS ALIVE");
 
 $( document ).ready(function() {
 
-  var x = 75;
-  var y = 150;
+  var x = 25;
+  var y = 250;
   //Try math.random dx or dy for more unpredictable results
-  var dx = 4;
-  var dy = 3;
+  var dx = 1.5;
+  var dy = -4;
   var gameBarHeight = 7;
   var gameBarWidth = 75;
   var gameBarXPosition;
@@ -34,16 +34,14 @@ $( document ).ready(function() {
     canvasMinX = $("#canvas").offset().left;
     canvasMaxX = canvasMinX + WIDTH;
     intervalId = setInterval(drawShapes, 50);
-    console.log(dy);
-    console.log(dx);
   }
 
   function bricks() {
-    brickRows = 3
+    brickRows = 5
     brickColumns = 5
-    brickWidth = (WIDTH / brickColumns) -1;
+    brickWidth = (WIDTH / brickColumns) - 1;
     brickHeight = 15;
-    padding = 1;
+    brickSpacing = 1;
     bricks = new Array(brickRows);
     for (i = 0; i < brickRows.length; i++){
       bricks[i] = new Array(brickColumns);
@@ -109,6 +107,23 @@ $( document ).ready(function() {
       }
     }
     rect(gameBarXPosition, HEIGHT-gameBarHeight - 5, gameBarWidth, gameBarHeight);
+    //Draw blocks for breaking
+    for (i = 0; i < brickRows.length; i++){
+      for (u = 0; u < brickColumns.length; u++){
+        if (bricks[i][u] == 1) {
+          rect((u * (brickWidth + brickSpacing)) + brickSpacing, (i * (brickHeight + brickSpacing)) + brickSpacing, brickWidth, brickHeight);
+        }
+      }
+    }
+    //Brick collision detection
+    var rowHeight = brickHeight + brickSpacing;
+    var columnWidth = brickWidth + brickSpacing;
+    var row = Math.floor(y/rowHeight);
+    var col = Math.floor(x/columnWidth);
+    if (y < brickRows * rowHeight && row >= 0 && col >= 0 && bricks[row][col] == 1) {
+      dy = -dy;
+      bricks[row][col] = 0;
+    }
     // If x-axis collision
     if (x + dx + Math.PI*2 >= WIDTH || x + dx <= 0 + Math.PI*2){
       dx = -dx;
@@ -189,6 +204,7 @@ $( document ).ready(function() {
 
   doMotion();
   gameBar();
+  bricks();
 
 });
 
