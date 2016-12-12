@@ -9,7 +9,7 @@ $( document ).ready(function() {
   var dx = 3.1;
   var dy = 5.7;
   var gameBarHeight = 10;
-  var gameBarWidth = 35;
+  var gameBarWidth = 50;
   var gameBarXPosition;
   var WIDTH;
   var HEIGHT;
@@ -23,7 +23,7 @@ $( document ).ready(function() {
     WIDTH = $("#canvas").width();
     HEIGHT = $("#canvas").height();
     gameBarXPosition = WIDTH / 2;
-    intervalId = setInterval(drawShapes, 80);
+    intervalId = setInterval(drawShapes, 50);
   }
 
   function circle(x,y,r) {
@@ -72,24 +72,25 @@ $( document ).ready(function() {
     // If x-axis collision
     if (x + dx + Math.PI*2 >= WIDTH || x + dx <= 0 + Math.PI*2){
       dx = -dx;
-      dx+= 0.37;
+      //Acceleration on x-axis collision
+      dx+= 1;
     }
     if (y + dy <= 0 + Math.PI*2) {
       dy = -dy;
       //Acceleration on y-axis collision
-      dy+= 0.131;
+      dy+= 1;
     }
-    else if (y + dy >= HEIGHT - 16) {
-      if (x > gameBarXPosition && x < (gameBarXPosition + gameBarWidth)) {
-        dy = -dy;
-      }
-      else {
-        //Ball hit bottom, did not collide with gameBar
-        clearInterval(intervalId);
-      }
+    else if (y > 278 && y < 295 && x > gameBarXPosition && x < (gameBarXPosition + gameBarWidth)) {
+      dy = -dy;
     }
-    x += dx;
-    y += dy;
+
+    else if (y + dy > HEIGHT) {
+      //Ball hit bottom, did not collide with gameBar
+      clearInterval(intervalId);
+    }
+    x += Math.round(dx);
+    y += Math.round(dy);
+    console.log(y);
   }
 
   // var rightKeyDown = false;
