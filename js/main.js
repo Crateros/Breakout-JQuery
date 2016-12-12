@@ -2,14 +2,13 @@ console.log("JQ IS ALIVE");
 
 $( document ).ready(function() {
 
-  //BEGIN LIBRARY CODE
   var x = 75;
   var y = 150;
   //Try math.random dx or dy for more unpredictable results
-  var dx = 3.1;
-  var dy = 5.7;
-  var gameBarHeight = 10;
-  var gameBarWidth = 50;
+  var dx = 4;
+  var dy = 3;
+  var gameBarHeight = 7;
+  var gameBarWidth = 75;
   var gameBarXPosition;
   var WIDTH;
   var HEIGHT;
@@ -17,13 +16,41 @@ $( document ).ready(function() {
   var intervalId = 0;
   var rightKeyDown = false;
   var leftKeyDown = false;
+  var canvasMinX = 0;
+  var canvasMaxX = 0;
+  var bricks;
+  var brickRows;
+  var brickColumns;
+  var brickWidth;
+  var brickHeight;
+  var brickSpacing;
+
 
   function doMotion() {
     ctx = $('#canvas')[0].getContext("2d");
     WIDTH = $("#canvas").width();
     HEIGHT = $("#canvas").height();
     gameBarXPosition = WIDTH / 2;
+    canvasMinX = $("#canvas").offset().left;
+    canvasMaxX = canvasMinX + WIDTH;
     intervalId = setInterval(drawShapes, 50);
+    console.log(dy);
+    console.log(dx);
+  }
+
+  function bricks() {
+    brickRows = 3
+    brickColumns = 5
+    brickWidth = (WIDTH / brickColumns) -1;
+    brickHeight = 15;
+    padding = 1;
+    bricks = new Array(brickRows);
+    for (i = 0; i < brickRows.length; i++){
+      bricks[i] = new Array(brickColumns);
+      for (u= 0; u < brickColumns.length; u++){
+        bricks[i][u] = 1;
+      }
+    }
   }
 
   function circle(x,y,r) {
@@ -35,6 +62,7 @@ $( document ).ready(function() {
   }
 
   function rect(x,y,w,h) {
+    ctx.fillStyle =  "#f4ad42";
     ctx.beginPath();
     ctx.rect(x,y,w,h);
     ctx.closePath();
@@ -45,27 +73,39 @@ $( document ).ready(function() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
   }
 
-  //END LIBRARY CODE
-
   function gameBar() {
     gameBarX = WIDTH / 2;
   }
 
   function drawShapes() {
     clear();
-    circle(x, y, 10);
+    circle(x, y, 6);
+
+    //Make gameBar responsive to mouse input
+    function gameMouse() {
+      canvasMinX = $("#canvas").offset().left;
+      canvasMaxX = canvasMinX + WIDTH;
+    }
+
+    function onMouseMove(evt) {
+      if (evt.pageX > canvasMinX && evt.pageX < canvasMaxX - gameBarWidth) {
+        gameBarXPosition = evt.pageX - canvasMinX;
+      }
+    }
+
+    $(document).mousemove(onMouseMove);
 
     //Move gameBar left on left arrow press
     if (leftKeyDown) {
       if (gameBarXPosition > 0) {
         // console.log(gameBarXPosition);
-        gameBarXPosition -= 5;
+        gameBarXPosition -= 10;
       }
     }
     else if (rightKeyDown) {
-      if (gameBarXPosition < 290) {
+      if (gameBarXPosition < 225) {
         // console.log(gameBarXPosition);
-        gameBarXPosition += 5;
+        gameBarXPosition += 10;
       }
     }
     rect(gameBarXPosition, HEIGHT-gameBarHeight - 5, gameBarWidth, gameBarHeight);
@@ -73,14 +113,18 @@ $( document ).ready(function() {
     if (x + dx + Math.PI*2 >= WIDTH || x + dx <= 0 + Math.PI*2){
       dx = -dx;
       //Acceleration on x-axis collision
-      dx+= 1;
-    }
-    if (y + dy <= 0 + Math.PI*2) {
-      dy = -dy;
-      //Acceleration on y-axis collision
-      dy+= 1;
-    }
-    else if (y > 278 && y < 295 && x > gameBarXPosition && x < (gameBarXPosition + gameBarWidth)) {
+      // if (dx <= 35) {
+        // dx+= 3;
+        // }
+      }
+      if (y + dy <= 0 + Math.PI*2) {
+        dy = -dy;
+        //Acceleration on y-axis collision
+        if (dy <= 15) {
+          dy+= 2;
+        }
+      }
+    else if (y > 278 && y < 290 && x > gameBarXPosition && x < (gameBarXPosition + gameBarWidth)) {
       dy = -dy;
     }
 
@@ -90,7 +134,7 @@ $( document ).ready(function() {
     }
     x += Math.round(dx);
     y += Math.round(dy);
-    console.log(y);
+    // console.log(y);
   }
 
   // var rightKeyDown = false;
@@ -143,9 +187,9 @@ $( document ).ready(function() {
   // Enter is 13
   // Space is 32
 
-
   doMotion();
   gameBar();
 
-
 });
+
+gameMouse();
