@@ -8,7 +8,7 @@ $( document ).ready(function() {
   //Try math.random dx or dy for more unpredictable results
   var dx = 3.1;
   var dy = 5.7;
-  var gameBarHeight = 5;
+  var gameBarHeight = 10;
   var gameBarWidth = 35;
   var gameBarXPosition;
   var WIDTH;
@@ -23,7 +23,7 @@ $( document ).ready(function() {
     WIDTH = $("#canvas").width();
     HEIGHT = $("#canvas").height();
     gameBarXPosition = WIDTH / 2;
-    intervalId = setInterval(drawShapes, 40);
+    intervalId = setInterval(drawShapes, 80);
   }
 
   function circle(x,y,r) {
@@ -79,8 +79,8 @@ $( document ).ready(function() {
       //Acceleration on y-axis collision
       dy+= 0.131;
     }
-    else if (y + dy > HEIGHT) {
-      if (x > gameBarXPosition && x < gameBarXPosition + gameBarWidth) {
+    else if (y + dy >= HEIGHT - 16) {
+      if (x > gameBarXPosition && x < (gameBarXPosition + gameBarWidth)) {
         dy = -dy;
       }
       else {
@@ -128,20 +128,19 @@ $( document ).ready(function() {
   //Draw new gameBar on downKeyPress
 
 
-  //Get arrow key IDs
-  //        function checkKey(e) {
-  //           e = e || window.event;
-  //             console.log(e.keyCode);
-  //        }
-  //
-  //       document.onkeydown = checkKey;
-  //Arrow up is 38
-  //Arrow down is 40
-  //Arrow left is 37
-  //Arrow right is 39
-
-
-
+  // Get arrow key IDs
+        //  function checkKey(e) {
+        //     e = e || window.event;
+        //       console.log(e.keyCode);
+        //  }
+        //
+        // document.onkeydown = checkKey;
+  // Arrow up is 38
+  // Arrow down is 40
+  // Arrow left is 37
+  // Arrow right is 39
+  // Enter is 13
+  // Space is 32
 
 
   doMotion();
@@ -149,22 +148,3 @@ $( document ).ready(function() {
 
 
 });
-
-
-
-
-
-
-
-
-//Get arrow key IDs
-//        function checkKey(e) {
-//           e = e || window.event;
-//             console.log(e.keyCode);
-//        }
-//
-//       document.onkeydown = checkKey;
-//Arrow up is 38
-//Arrow down is 40
-//Arrow left is 37
-//Arrow right is 39
