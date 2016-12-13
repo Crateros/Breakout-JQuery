@@ -5,11 +5,36 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Molle:400i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lobster|Pacifico" rel="stylesheet">
     <!-- <script src="js/main.js"></script> -->
     <title>BreakOut JQuery</title>
   </head>
 
   <body>
+    <audio autoplay>
+      <source src="music/wind.mp3" type="audio/mpeg"></audio>
+
+
+    <!-- Game container -->
+    <div class="gameBox">
+      <div id="jquery" class="rotate">JQuery</div>
+      <div id="bigTitle">BREAKOUT</div>
+      <div id="spacebarStart" class = "fade">[1] Start Game</div>
+      <div id="highScores" class = "fade">[2] High Scores</div>
+      <div id="about" class = "fade">[3] About Breakout</div>
+      <canvas id="canvas" width="650" height="475"></canvas>
+    </div>
+    <div class="gameInfo">
+  		<div class="instructions">
+  			<small>
+  				Use left and right keys or your mouse to move the game paddle.
+  				<br>
+  				Press <span id="lookAtMe">spacebar</span> to start the game.
+  			</small>
+  		</div>
+  	</div>
     <!-- Game logo -->
     <div class="logo">
       <div class="score">
@@ -23,22 +48,6 @@
         </ul>
       </div>
     </div>
-
-    <!-- Game container -->
-    <div class="gameBox">
-      <canvas id="canvas" width="300" height="300"></canvas>
-    </div>
-    <div class="gameInfo">
-  		<div class="instructions">
-  			<small>
-  				Use left and right keys or your mouse to move the game paddle.
-  				<br>
-  				Press spacebar to start the game.
-  			</small>
-  		</div>
-  	</div>
-
-
 
   <script src="js/main.js"></script>
   </body>

@@ -3,13 +3,149 @@
   src: url("../fonts/arcade.ttf");
 }
 
+@font-face {
+  font-family: emulogic;
+  src: url("../fonts/emulogic.ttf");
+}
+
+@font-face {
+  font-family: vador;
+  src: url("../fonts/vador.ttf");
+}
+
+body {
+  height: auto;
+  width: auto;
+  background-image: url("../img/bk3.gif");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.logo {
+  width: 400px;
+  margin: 0 auto;
+}
+.gameBox {
+  width: 652px;
+  height: 477px;
+  position: relative;
+  background: transparent;
+  margin: 40px auto;
+  border: 7px solid white;
+  border-radius: 10px;
+  z-index: 2;
+}
+
 #canvas {
-  /*height: 300px;
-  width: 300px;*/
   border: 1px solid black;
   background-image: url("../img/game-background.png");
+  background-size: cover;
+  position: absolute;
+  margin-top: -217px;
+}
+
+#jquery {
+  width: 100px;
+  height: 30px;
+  color: #0769ad;
+  font-family: "Lobster";
+  font-size: 2.5em;
+  text-align: left;
+  position: relative;
+  z-index: 2;
+  margin-left: 110px;
+  top: 35px;
+}
+.rotate {
+    transform: translateY(125%) rotate(-45deg);
+}
+
+#bigTitle {
+  width: 150px;
+  height: 40px;
+  color: white;
+  font-family: "vador";
+  font-size: 3.8em;
+  font-style: italic;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  top: 65px;
+  right: 55px;
+  margin: 0 auto;
+}
+
+#spacebarStart {
+  width: 200px;
+  height: 40px;
+  color: white;
+  font-family: "emulogic";
+  font-size: 0.85em;
+  position: relative;
+  top: 150px;
+  left: -20px;
+  margin: 0 auto;
+  padding-top: 9px;
+  z-index: 1;
+  text-align: center;
+  background-color: rgba(#a7a7a7, 0.1);
+}
+
+#highScores {
+  width: 250px;
+  height: 40px;
+  color: white;
+  font-family: "emulogic";
+  font-size: 0.85em;
+  position: relative;
+  top: 145px;
+  left: -13px;
+  margin: 0 auto;
+  padding-top: 9px;
+  z-index: 1;
+  text-align: center;
+  background-color: rgba(#a7a7a7, 0.1);
+}
+
+#about {
+  width: 300px;
+  height: 40px;
+  color: white;
+  font-family: "emulogic";
+  font-size: 0.85em;
+  position: relative;
+  top: 140px;
+  left: 7px;
+  margin: 0 auto;
+  padding-top: 9px;
+  z-index: 1;
+  text-align: center;
+  background-color: rgba(#a7a7a7, 0.1);
+}
+
+.fade
+{
+        opacity:0.50;
+}
+.fade:hover
+{
+        opacity:1;
 }
 
 .instructions {
-font-family: "arcade";
+width: 520px;
+height: auto;
+margin: 2px auto;
+font-family: "emulogic";
+font-size: 0.8em;
+text-align: center;
+margin-top: -10px;
+color: #222222;
+}
+
+#lookAtMe {
+  font-size: 1.2em;
+  text-decoration: underline;
+  color: black;
 }

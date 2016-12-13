@@ -1,10 +1,10 @@
 console.log("JQ IS ALIVE");
 
-  var x = 25;
+  var x = 50;
   var y = 250;
   //Try math.random dx or dy for more unpredictable results
-  var dx = 1.5;
-  var dy = -1;
+  var dx = 3;
+  var dy = 1;
   var ballRadius = 7
   var gameBarHeight = 7;
   var gameBarWidth = 75;
@@ -13,9 +13,9 @@ console.log("JQ IS ALIVE");
   var WIDTH;
   var HEIGHT;
   var ctx;
+  var beginInterval = 0;
   var intervalId = 0;
-  var rightKeyDown = false;
-  var leftKeyDown = false;
+  var spacebar = false;
   var canvasMinX = 0;
   var canvasMaxX = 0;
   var bricks;
@@ -49,6 +49,8 @@ console.log("JQ IS ALIVE");
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
   }
 
+  var rightKeyDown;
+  var leftKeyDown;
   //KeyDown event
   function downKeyPress(downPress) {
     //Arrow Left press
@@ -83,6 +85,33 @@ console.log("JQ IS ALIVE");
   }
   $(document).mousemove(onMouseMove);
 
+  //Spacebar to start game
+  var pauseState =  true;
+  function spacebarPress(evt) {
+		if(evt.keyCode == 32) {
+			pauseState = false;
+      $("audio").autoplay = true;
+			// Only allows one-time click on document load
+		}
+    console.log("Pause: ", pauseState);
+	}
+  $(document).keyup(spacebarPress);
+
+  //Number key 1 to initialize game
+
+  function numOnePress(numPress) {
+    console.log(numPress);
+    if (numPress.keyCode == 49) {
+      $(".gameBox").children("div").text("");
+    }
+  }
+  $(document).keyup(numOnePress)
+
+
+
+
+
+
   //Animate shapes on interval
   function doMotion() {
     ctx = $('#canvas')[0].getContext("2d");
@@ -91,14 +120,16 @@ console.log("JQ IS ALIVE");
     gameBarXPosition = WIDTH / 2;
     canvasMinX = $("#canvas").offset().left;
     canvasMaxX = canvasMinX + WIDTH;
-    intervalId = setInterval(drawShapes, 10);
+    // beginInterval = setTimeout(drawShapes, 40);
+    intervalId = setInterval(drawShapes, 60);
+    drawShapes();
   }
 
   //Create bricks array
   function gameBricks() {
     brickRows = 5
     brickColumns = 5
-    brickWidth = (WIDTH / brickColumns) - 1;
+    brickWidth = (650 / brickColumns) - 1;
     brickHeight = 15;
     brickSpacing = 1;
     bricks = new Array(brickRows);
@@ -112,6 +143,7 @@ console.log("JQ IS ALIVE");
 
   //Draw shapes and feed to doMotion
   function drawShapes() {
+    if (pauseState == false) {
     clear();
     circle(x, y, ballRadius);
     //Move gameBar left on left arrow press
@@ -122,7 +154,7 @@ console.log("JQ IS ALIVE");
       }
     }
     else if (rightKeyDown) {
-      if (gameBarXPosition < 225) {
+      if (gameBarXPosition < 525) {
         // console.log(gameBarXPosition);
         gameBarXPosition += 5;
       }
@@ -146,29 +178,38 @@ console.log("JQ IS ALIVE");
     //Brick collision detection
     if (y < brickRows * rowHeight && row >= 0 && col >= 0 && bricks[row][col] == 1) {
       dy = -dy;
+      if (dy <= -1 && dy >= -7) {
+        dy -= 0.5;
+      }
+      else if (dy >= 1 && dy <= 7) {
+        dy += 0.5;
+      }
       bricks[row][col] = 0;
     }
     //x-axis LEFT & RIGHT collision
     if (x + dx + ballRadius > WIDTH || x + dx - ballRadius < 0){
       dx = -dx;
-      //Acceleration on x-axis collision
-      // if (dx <= 35) {
-        // dx+= 3;
-        // }
+      // Acceleration on x-axis collision
+      if (dx <= -1 && dx >= -7) {
+        dx -= 0.5;
       }
+      else if (dy >= 1 && dy <= 7) {
+        dx += 0.5;
+      }
+    }
     //y-axis TOP collision
     if (y + dy - ballRadius < 0) {
       dy = -dy;
-      //Acceleration on y-axis collision
-      // if (dy <= 15) {
-      //   dy+= 2;
-      // }
+      // Acceleration on y-axis collision
+      if (dy <= 7) {
+        dy += 0.5;
+      }
     }
     //gameBar collision
     else if (y + dy + ballRadius > HEIGHT - gameBarHeight) {
       if (x > gameBarXPosition && x <gameBarXPosition + gameBarWidth) {
         //Alter dx based on collision position with gameBar
-        dx = 5 * ((x-(gameBarXPosition+gameBarWidth/2))/gameBarWidth);
+        dx = 7 * ((x-(gameBarXPosition+gameBarWidth/2))/gameBarWidth);
         dy = -dy;
       }
       else if (y > HEIGHT) {
@@ -178,28 +219,16 @@ console.log("JQ IS ALIVE");
     }
     x += dx;
     y += dy;
+    // console.log("dx: ", dx);
+    // console.log("dy: ", dy);
+    }
   }
 
+  // var gameMusic = $('<embed autoplay="true" height="0" width="0" />');
+  // sound.attr('src', "../music/wind.mp3");
+  // $('body').append(sound);
+
+  // spacebarPress();
+  // numOnePress();
   doMotion();
   gameBricks();
-
-
-
-  // function gameBar() {
-  //   gameBarX = WIDTH / 2;
-  // }
-
-
-  // Get arrow key IDs
-        //  function checkKey(e) {
-        //     e = e || window.event;
-        //       console.log(e.keyCode);
-        //  }
-        //
-        // document.onkeydown = checkKey;
-  // Arrow up is 38
-  // Arrow down is 40
-  // Arrow left is 37
-  // Arrow right is 39
-  // Enter is 13
-  // Space is 32
