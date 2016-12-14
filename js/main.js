@@ -92,22 +92,67 @@ console.log("JQ IS ALIVE");
       $("#spacebarStart").text("");
       pauseState = false;
       doMotion();
+      $.playSound("music/wind");
 		}
     console.log("Pause: ", pauseState);
 	}
   $(document).keyup(spacebarPress);
 
   //Number key 1 to initialize game
-
   function numOnePress(numPress) {
-    console.log(numPress);
     if (numPress.keyCode == 49) {
       $(".gameBox").children("div").text("");
       firstRender();
       $("#spacebarStart").html("Press <span id=\"lookAtMe\">spacebar</span> to start the game");
+      $("audio")["0"].pause()
+      $.playSound("sounds/start");
     }
   }
-  $(document).keyup(numOnePress)
+  $(document).keyup(numOnePress);
+
+  //Number 2 to show score screen
+  function numTwoPress(numPress) {
+    if (numPress.keyCode == 50) {
+      $("#startGame").text("");
+      $("#highScores").text("");
+      $("#about").text("");
+      $("#scoreBox").css("visibility", "visible");
+      $("#backButton").css("visibility", "visible");
+      $.playSound("sounds/menu");
+    }
+  }
+  $(document).keyup(numTwoPress);
+
+  function numThreePress(numPress) {
+    if (numPress.keyCode == 51) {
+      $("#startGame").text("");
+      $("#highScores").text("");
+      $("#about").text("");
+      $("#breakoutInfo").css("visibility", "visible")
+      $("#backButton").css("visibility", "visible");
+      $.playSound("sounds/menu");
+    }
+  }
+  $(document).keyup(numThreePress);
+
+  //Back button to traverse menu
+  $("#backButton").click(function() {
+    console.log("clicked!");
+      $("#jquery").text("JQuery");
+      $("#bigTitle").text("BREAKOUT");
+      $("#startGame").text("[1] New Game");
+      $("#highScores").text("[2] High Scores");
+      $("#about").text("[3] About Breakout");
+      $("#scoreBox").css("visibility", "hidden");
+      $("#backButton").css("visibility", "hidden");
+      $("#breakoutInfo").css("visibility", "hidden");
+      $.playSound("sounds/menu");
+  });
+
+
+
+
+
 
   //Draw first frame
     function firstRender() {
@@ -224,6 +269,13 @@ console.log("JQ IS ALIVE");
       else if (y > HEIGHT) {
       //Ball hit bottom, did not collide with gameBar
         clearInterval(intervalId);
+        var audioz = $("audio");
+        for(var i =0; i < audioz.length; i++) {
+          if (audioz[i].currentSrc == "file:///home/donne/Desktop/BreakOut%20JS/music/wind.mp3") {
+            audioz[i].pause()
+          }
+        }
+        $.playSound("sounds/death");
       }
     }
     x += dx;

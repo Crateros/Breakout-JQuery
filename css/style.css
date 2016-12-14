@@ -84,7 +84,7 @@ body {
   font-size: 0.85em;
   position: relative;
   top: 150px;
-  left: -20px;
+  left: -34px;
   margin: 0 auto;
   padding-top: 9px;
   z-index: 1;
@@ -137,14 +137,54 @@ body {
   text-align: center;
   z-index: 1;
 }
+#scoreBox {
+  width: 450px;
+  height: 400px;
+  color: white;
+  font-family: "emulogic";
+  font-size: 1.2em;
+  line-height: 50px;
+  position: absolute;
+  z-index: 1;
+  top: 180px;
+  right: -80px;
+  visibility: hidden;
+}
+
+#breakoutInfo {
+  width: 500px;
+  height: 225px;
+  color: white;
+  font-family: "emulogic";
+  font-size: 0.85em;
+  position: absolute;
+  left: 100px;
+  bottom: 75px;
+  line-height: 28px;
+  z-index: 1;
+  visibility: hidden;
+}
+
+#backButton {
+  height: 30px;
+  position: absolute;
+  bottom: 20px;
+  left: 500px;
+  font-size: 0.85em;
+  font-family: "emulogic";
+  color: white;
+  z-index: 1;
+  background-color: rgba(#a7a7a7, 0.1);
+  visibility: hidden;
+  }
 
 .fade
 {
-        opacity:0.50;
+  opacity:0.50;
 }
 .fade:hover
 {
-        opacity:1;
+  opacity:1;
 }
 
 .instructions {
