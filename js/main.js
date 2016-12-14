@@ -1,10 +1,10 @@
 console.log("JQ IS ALIVE");
 
-  var x = 200;
-  var y = 350;
+  var x = 300;
+  var y = 200;
   //Try math.random dx or dy for more unpredictable results
   var dx = 3;
-  var dy = 1;
+  var dy = 1.5;
   var ballRadius = 7
   var gameBarHeight = 7;
   var gameBarWidth = 75;
@@ -25,6 +25,7 @@ console.log("JQ IS ALIVE");
   var brickWidth;
   var brickHeight;
   var brickSpacing;
+  $("audio")[0].volume = 0.75;
 
   //Draw a circle
   function circle(x,y,r) {
@@ -101,16 +102,18 @@ console.log("JQ IS ALIVE");
   //Number key 1 to initialize game
   function numOnePress(numPress) {
     if (numPress.keyCode == 49) {
+      $("audio")["0"].pause()
+      $.playSound("sounds/start");
+      setTimeout(function() {
       $(".gameBox").children("div").text("");
       firstRender();
       $("#spacebarStart").html("Press <span id=\"lookAtMe\">spacebar</span> to start the game");
-      $("audio")["0"].pause()
-      $.playSound("sounds/start");
+    }, 1500);
     }
   }
   $(document).keyup(numOnePress);
 
-  //Number 2 to show score screen
+  //Number key 2 to show score screen
   function numTwoPress(numPress) {
     if (numPress.keyCode == 50) {
       $("#startGame").text("");
@@ -123,6 +126,7 @@ console.log("JQ IS ALIVE");
   }
   $(document).keyup(numTwoPress);
 
+  //Number key 3 to show game info
   function numThreePress(numPress) {
     if (numPress.keyCode == 51) {
       $("#startGame").text("");
@@ -150,10 +154,6 @@ console.log("JQ IS ALIVE");
   });
 
 
-
-
-
-
   //Draw first frame
     function firstRender() {
       ctx = $('#canvas')[0].getContext("2d");
@@ -162,7 +162,7 @@ console.log("JQ IS ALIVE");
       gameBarXPosition = WIDTH / 2;
       canvasMinX = $("#canvas").offset().left;
       canvasMaxX = canvasMinX + WIDTH;
-      setTimeout(drawShapes, 10);
+      setTimeout(drawShapes, 20);
     }
 
   //Animate shapes on interval
@@ -174,8 +174,7 @@ console.log("JQ IS ALIVE");
     gameBarXPosition = WIDTH / 2;
     canvasMinX = $("#canvas").offset().left;
     canvasMaxX = canvasMinX + WIDTH;
-    // beginInterval = setTimeout(drawShapes, 40);
-    intervalId = setInterval(drawShapes, 10);
+    intervalId = setInterval(drawShapes, 20);
     drawShapes();
     }
   }
@@ -239,10 +238,12 @@ console.log("JQ IS ALIVE");
         dy += 0.5;
       }
       bricks[row][col] = 0;
+      $.playSound("sounds/BoopBrick");
     }
     //x-axis LEFT & RIGHT collision
     if (x + dx + ballRadius > WIDTH || x + dx - ballRadius < 0){
       dx = -dx;
+      $.playSound("sounds/BoopWall");
       // Acceleration on x-axis collision
       if (dx <= -1 && dx >= -7) {
         dx -= 0.5;
@@ -254,6 +255,7 @@ console.log("JQ IS ALIVE");
     //y-axis TOP collision
     if (y + dy - ballRadius < 0) {
       dy = -dy;
+      $.playSound("sounds/BoopWall");
       // Acceleration on y-axis collision
       if (dy <= 7) {
         dy += 0.5;
@@ -265,6 +267,7 @@ console.log("JQ IS ALIVE");
         //Alter dx based on collision position with gameBar
         dx = 7 * ((x-(gameBarXPosition+gameBarWidth/2))/gameBarWidth);
         dy = -dy;
+        $.playSound("sounds/BoopBar");
       }
       else if (y > HEIGHT) {
       //Ball hit bottom, did not collide with gameBar
