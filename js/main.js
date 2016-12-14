@@ -192,6 +192,38 @@ console.log("JQ IS ALIVE");
     }
   }
 
+
+  //Score game
+  function scoreGame(row) {
+    var score = parseInt($("#currentScore").text());
+      if (rowColors[row] === "#468DF6") {
+        score += 250;
+      }
+      else if (rowColors[row] === "#33A752") {
+        score += 200;
+      }
+      else if (rowColors[row] === "#FF9900") {
+        score += 150;
+      }
+      else if (rowColors[row] === "#ED3737") {
+        score += 100;
+      }
+      else if (rowColors[row] === "#FB3EFF") {
+        score += 50;
+      }
+    $("#currentScore").text(score);
+  }
+
+  // //Score game
+  // function scoreGame() {
+  //   var score = parseInt($("#currentScore").text());
+  //   for (var i = 0; i < rows.length; i++) {
+  //     if (i = 0)
+  //   }
+  //   score += 100;
+  //   $("#currentScore").text(score);
+  // }
+
   //Draw shapes and feed to doMotion
   function drawShapes() {
     clear();
@@ -221,6 +253,7 @@ console.log("JQ IS ALIVE");
         }
       }
     }
+
     var rowHeight = brickHeight + brickSpacing;
     var columnWidth = brickWidth + brickSpacing;
     var row = Math.floor(y/rowHeight);
@@ -235,6 +268,7 @@ console.log("JQ IS ALIVE");
         dy += 1;
       }
       bricks[row][col] = 0;
+      scoreGame(row);
       $.playSound("sounds/BoopBrick");
     }
     //x-axis LEFT & RIGHT collision

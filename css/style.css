@@ -75,73 +75,63 @@ body {
   right: 55px;
   margin: 0 auto;
 }
+#startGame, #highScores, #about, #spacebarStart, #scoreBox, #breakoutInfo, #backButton, #score {
+  font-family: "emulogic";
+  color: white;
+  z-index: 1;
+  background-color: rgba(#a7a7a7, 0.1);
+}
 
 #startGame {
   width: 200px;
   height: 40px;
-  color: white;
-  font-family: "emulogic";
+
   font-size: 0.85em;
   position: relative;
   top: 150px;
   left: -34px;
   margin: 0 auto;
   padding-top: 9px;
-  z-index: 1;
   text-align: center;
-  background-color: rgba(#a7a7a7, 0.1);
 }
 
 #highScores {
   width: 250px;
   height: 40px;
-  color: white;
-  font-family: "emulogic";
   font-size: 0.85em;
   position: relative;
   top: 145px;
   left: -13px;
   margin: 0 auto;
   padding-top: 9px;
-  z-index: 1;
   text-align: center;
-  background-color: rgba(#a7a7a7, 0.1);
 }
 
 #about {
   width: 300px;
   height: 40px;
-  color: white;
-  font-family: "emulogic";
   font-size: 0.85em;
   position: relative;
   top: 140px;
   left: 7px;
   margin: 0 auto;
   padding-top: 9px;
-  z-index: 1;
   text-align: center;
-  background-color: rgba(#a7a7a7, 0.1);
 }
 
 #spacebarStart {
   width: 450px;
   height: 60px;
-  color: white;
-  font-family: "emulogic";
   font-size: 0.85em;
   position: absolute;
   top: 160px;
   left: 120px;
-  background-color: rgba(#a7a7a7, 0.1);
   text-align: center;
   z-index: 1;
 }
 #scoreBox {
   width: 450px;
   height: 400px;
-  color: white;
-  font-family: "emulogic";
   font-size: 1.2em;
   line-height: 50px;
   position: absolute;
@@ -154,8 +144,6 @@ body {
 #breakoutInfo {
   width: 500px;
   height: 225px;
-  color: white;
-  font-family: "emulogic";
   font-size: 0.85em;
   position: absolute;
   left: 100px;
@@ -171,12 +159,13 @@ body {
   bottom: 20px;
   left: 500px;
   font-size: 0.85em;
-  font-family: "emulogic";
-  color: white;
   z-index: 1;
-  background-color: rgba(#a7a7a7, 0.1);
   visibility: hidden;
   }
+
+#score {
+
+}
 
 .fade
 {
