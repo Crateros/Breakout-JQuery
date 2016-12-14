@@ -76,7 +76,7 @@ body {
   margin: 0 auto;
 }
 
-#spacebarStart {
+#startGame {
   width: 200px;
   height: 40px;
   color: white;
@@ -124,6 +124,20 @@ body {
   background-color: rgba(#a7a7a7, 0.1);
 }
 
+#spacebarStart {
+  width: 450px;
+  height: 60px;
+  color: white;
+  font-family: "emulogic";
+  font-size: 0.85em;
+  position: absolute;
+  top: 160px;
+  left: 120px;
+  background-color: rgba(#a7a7a7, 0.1);
+  text-align: center;
+  z-index: 1;
+}
+
 .fade
 {
         opacity:0.50;
@@ -145,7 +159,7 @@ color: #222222;
 }
 
 #lookAtMe {
-  font-size: 1.2em;
+  font-size: 1.05em;
   text-decoration: underline;
-  color: black;
+  color: white;
 }

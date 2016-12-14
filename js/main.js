@@ -1,7 +1,7 @@
 console.log("JQ IS ALIVE");
 
-  var x = 50;
-  var y = 250;
+  var x = 200;
+  var y = 350;
   //Try math.random dx or dy for more unpredictable results
   var dx = 3;
   var dy = 1;
@@ -89,9 +89,9 @@ console.log("JQ IS ALIVE");
   var pauseState =  true;
   function spacebarPress(evt) {
 		if(evt.keyCode == 32) {
-			pauseState = false;
-      $("audio").autoplay = true;
-			// Only allows one-time click on document load
+      $("#spacebarStart").text("");
+      pauseState = false;
+      doMotion();
 		}
     console.log("Pause: ", pauseState);
 	}
@@ -103,17 +103,26 @@ console.log("JQ IS ALIVE");
     console.log(numPress);
     if (numPress.keyCode == 49) {
       $(".gameBox").children("div").text("");
+      firstRender();
+      $("#spacebarStart").html("Press <span id=\"lookAtMe\">spacebar</span> to start the game");
     }
   }
   $(document).keyup(numOnePress)
 
-
-
-
-
+  //Draw first frame
+    function firstRender() {
+      ctx = $('#canvas')[0].getContext("2d");
+      WIDTH = $("#canvas").width();
+      HEIGHT = $("#canvas").height();
+      gameBarXPosition = WIDTH / 2;
+      canvasMinX = $("#canvas").offset().left;
+      canvasMaxX = canvasMinX + WIDTH;
+      setTimeout(drawShapes, 10);
+    }
 
   //Animate shapes on interval
   function doMotion() {
+    if (!pauseState) {
     ctx = $('#canvas')[0].getContext("2d");
     WIDTH = $("#canvas").width();
     HEIGHT = $("#canvas").height();
@@ -121,17 +130,18 @@ console.log("JQ IS ALIVE");
     canvasMinX = $("#canvas").offset().left;
     canvasMaxX = canvasMinX + WIDTH;
     // beginInterval = setTimeout(drawShapes, 40);
-    intervalId = setInterval(drawShapes, 60);
+    intervalId = setInterval(drawShapes, 10);
     drawShapes();
+    }
   }
 
   //Create bricks array
   function gameBricks() {
     brickRows = 5
     brickColumns = 5
-    brickWidth = (650 / brickColumns) - 1;
+    brickWidth = (650 / brickColumns) - 5;
     brickHeight = 15;
-    brickSpacing = 1;
+    brickSpacing = 5;
     bricks = new Array(brickRows);
     for (var i = 0; i < brickRows; i++){
       bricks[i] = new Array(brickColumns);
@@ -143,7 +153,6 @@ console.log("JQ IS ALIVE");
 
   //Draw shapes and feed to doMotion
   function drawShapes() {
-    if (pauseState == false) {
     clear();
     circle(x, y, ballRadius);
     //Move gameBar left on left arrow press
@@ -154,7 +163,7 @@ console.log("JQ IS ALIVE");
       }
     }
     else if (rightKeyDown) {
-      if (gameBarXPosition < 525) {
+      if (gameBarXPosition < 575) {
         // console.log(gameBarXPosition);
         gameBarXPosition += 5;
       }
@@ -221,14 +230,10 @@ console.log("JQ IS ALIVE");
     y += dy;
     // console.log("dx: ", dx);
     // console.log("dy: ", dy);
-    }
   }
 
   // var gameMusic = $('<embed autoplay="true" height="0" width="0" />');
   // sound.attr('src', "../music/wind.mp3");
   // $('body').append(sound);
 
-  // spacebarPress();
-  // numOnePress();
-  doMotion();
   gameBricks();
