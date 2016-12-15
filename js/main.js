@@ -1,7 +1,7 @@
 console.log("JQ IS ALIVE");
 
   var x = 400;
-  var y = 150;
+  var y = 225;
   //Try math.random dx or dy for more unpredictable results
   var dx = 3;
   var dy = 3;
@@ -36,7 +36,6 @@ console.log("JQ IS ALIVE");
 
   //Draw a rectangle
   function rect(x,y,w,h) {
-    // ctx.fillStyle =  "#f4ad42";
     ctx.beginPath();
     ctx.rect(x,y,w,h);
     ctx.closePath();
@@ -105,8 +104,9 @@ console.log("JQ IS ALIVE");
       setTimeout(function() {
         $(".gameBox").children("div").text("");
         firstRender();
+        $("#score").css("visibility", "visible");
         $("#spacebarStart").html("Press <span id=\"lookAtMe\">spacebar</span> to start the game");
-      }, 1500);
+      }, 1000);
     }
   }
   $(document).keyup(numOnePress);
@@ -119,10 +119,35 @@ console.log("JQ IS ALIVE");
       $("#about").text("");
       $("#scoreBox").css("visibility", "visible");
       $("#backButton").css("visibility", "visible");
+      getScore();
       $.playSound("sounds/menu");
     }
   }
   $(document).keyup(numTwoPress);
+
+  //Updates high scores from localStorage
+  function getScore() {
+    //Store localStorage scores (strings) as array
+    var scoreStrings = Object.values(localStorage);
+    //Convert scoreStrings to integers
+    var scoreNumbers = [];
+    for (i = 0; i < scoreStrings.length; i++) {
+      scoreNumbers.push(parseInt(scoreStrings[i]))
+    }
+    //Add new player score to scoreNumbers array
+    scoreNumbers.push(parseInt($("#currentScore").text()));
+    //Sort scoreNumbers descending
+    scoreNumbers.sort(function(a,b){
+      return b-a;
+    });
+    //Iterate through high scores, overwrite non-empty entries with sorted scoreNumbers
+    for (i = 0; i < $("scoreSheet").children().length; i++){
+      if ($("#score" + i + 1).text() != "...") {
+        $("#score" + i + 1).text(localStorage.i[i]);
+      }
+    }
+
+  }
 
   //Number key 3 to show game info
   function numThreePress(numPress) {
@@ -149,6 +174,17 @@ console.log("JQ IS ALIVE");
       $("#backButton").css("visibility", "hidden");
       $("#breakoutInfo").css("visibility", "hidden");
       $.playSound("sounds/menu");
+  });
+
+  //Mute backButton
+  $("#muteButton").click(function(){
+    var audioz = $("audio");
+    for(var i =0; i < audioz.length; i++) {
+      if (audioz[i].currentSrc == "file:///home/donne/Desktop/BreakOut%20JS/music/wind.mp3" || audioz[i].currentSrc == "file:///home/donne/Desktop/BreakOut%20JS/music/mainmenu.mp3") {
+        $("#muteButton img").attr("src", "img/mute2.png");
+        audioz[i].pause();
+      }
+    }
   });
 
   //Draw first frame
@@ -192,7 +228,6 @@ console.log("JQ IS ALIVE");
     }
   }
 
-
   //Score game
   function scoreGame(row) {
     var score = parseInt($("#currentScore").text());
@@ -213,16 +248,6 @@ console.log("JQ IS ALIVE");
       }
     $("#currentScore").text(score);
   }
-
-  // //Score game
-  // function scoreGame() {
-  //   var score = parseInt($("#currentScore").text());
-  //   for (var i = 0; i < rows.length; i++) {
-  //     if (i = 0)
-  //   }
-  //   score += 100;
-  //   $("#currentScore").text(score);
-  // }
 
   //Draw shapes and feed to doMotion
   function drawShapes() {
@@ -310,6 +335,12 @@ console.log("JQ IS ALIVE");
           }
         }
         $.playSound("sounds/death");
+        setTimeout(function() {
+          $.playSound("music/gameover");
+          $("#gameOver").addClass("animated");
+          $("#gameOver").addClass("fadeIn");
+          $("#gameOver").css("visibility", "visible");
+        }, 2000);
       }
     }
     x += dx;
@@ -323,3 +354,6 @@ console.log("JQ IS ALIVE");
   // $('body').append(sound);
 
   gameBricks();
+
+
+//push to local storage, use local storage to populate array via push
