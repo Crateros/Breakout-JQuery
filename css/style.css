@@ -18,7 +18,7 @@ body {
   width: auto;
   background-image: url("../img/bk3.gif");
   background-size: cover;
-  background-position: center;
+  /*background-position: center;*/
   background-repeat: no-repeat;
 }
 
@@ -75,7 +75,7 @@ body {
   right: 55px;
   margin: 0 auto;
 }
-#startGame, #highScores, #about, #spacebarStart, #scoreBox, #breakoutInfo, #backButton {
+#startGame, #highScores, #about, #spacebarStart, #scoreBox, #breakoutInfo, #backButton, #newGame {
   font-family: "emulogic";
   color: white;
   z-index: 1;
@@ -159,13 +159,13 @@ body {
   }
 
 #score {
-position: relative;
-bottom: 580px;
-left: 330px;
-z-index: 2;
-font-family: "emulogic";
-color: white;
-visibility: hidden;
+  position: relative;
+  bottom: 580px;
+  left: 330px;
+  z-index: 2;
+  font-family: "emulogic";
+  color: white;
+  visibility: hidden;
 }
 
 #muteButton {
@@ -186,6 +186,16 @@ visibility: hidden;
   text-align: center;
   position: relative;
   bottom: 430px;
+  left: 125px;
+  z-index: 2;
+  visibility: hidden;
+}
+
+#newGame {
+  width: 150px;
+  height: 40px;
+  position: relative;
+  bottom: 315px;
   left: 125px;
   z-index: 2;
   visibility: hidden;
