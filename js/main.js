@@ -94,12 +94,13 @@ console.log("JQ IS ALIVE");
 		}
     console.log("Pause: ", pauseState);
 	}
-  $(document).keyup(spacebarPress);
+  // $(document).keyup(spacebarPress); <-------------
 
   //Number key 1 to initialize game
   function numOnePress(numPress) {
     if (numPress.keyCode == 49) {
       $("audio")["0"].pause()
+      $(document).keyup(spacebarPress);
       $.playSound("sounds/start");
       setTimeout(function() {
         $(".gameBox").children("div").text("");
@@ -125,28 +126,36 @@ console.log("JQ IS ALIVE");
   }
   $(document).keyup(numTwoPress);
 
+  //If localStorage is empty create new localStorage object <--------------------------
+  function ensureStoredScores() {
+    if(!localStorage.scores) {
+      localStorage.setItem("scores", JSON.stringify([]));
+    }
+  }
+
   //Updates high scores from localStorage
   function getScore() {
+    console.log("This is get score")
     //Store localStorage scores (strings) as array
-    var scoreStrings = Object.values(localStorage);
+    var scoreStrings = JSON.parse(localStorage.scores);
     //Convert scoreStrings to integers
     var scoreNumbers = [];
     for (i = 0; i < scoreStrings.length; i++) {
       scoreNumbers.push(parseInt(scoreStrings[i]))
     }
-    //Add new player score to scoreNumbers array
-    scoreNumbers.push(parseInt($("#currentScore").text()));
     //Sort scoreNumbers descending
     scoreNumbers.sort(function(a,b){
       return b-a;
     });
+    console.log(scoreNumbers);
     //Iterate through high scores, overwrite non-empty entries with sorted scoreNumbers
-    for (i = 0; i < $("scoreSheet").children().length; i++){
-      if ($("#score" + i + 1).text() != "...") {
-        $("#score" + i + 1).text(localStorage.i[i]);
+    for (i = 0; i < scoreNumbers.length; i++){
+      console.log("i", i, "scorevalue", scoreNumbers[i]);
+      if(i >= $("#scoreSheet").children().length){
+        break;
       }
+      $("#score" + (i + 1)).text(scoreNumbers[i]);
     }
-
   }
 
   //Number key 3 to show game info
@@ -257,13 +266,13 @@ console.log("JQ IS ALIVE");
     if (leftKeyDown) {
       if (gameBarXPosition > 0) {
         // console.log(gameBarXPosition);
-        gameBarXPosition -= 5;
+        gameBarXPosition -= 10;
       }
     }
     else if (rightKeyDown) {
       if (gameBarXPosition < 575) {
         // console.log(gameBarXPosition);
-        gameBarXPosition += 5;
+        gameBarXPosition += 10;
       }
     }
     ctx.fillStyle = gameBarColor;
@@ -328,6 +337,12 @@ console.log("JQ IS ALIVE");
       else if (y > HEIGHT) {
       //Ball hit bottom, did not collide with gameBar
         clearInterval(intervalId);
+        if ($("#currentScore").text() != "0") {
+          var tempArray = JSON.parse(localStorage.scores);
+          tempArray.push($("#currentScore").text());
+          localStorage.setItem("scores", JSON.stringify(tempArray));
+        }
+        getScore();
         var audioz = $("audio");
         for(var i =0; i < audioz.length; i++) {
           if (audioz[i].currentSrc == "file:///home/donne/Desktop/BreakOut%20JS/music/wind.mp3") {
@@ -354,6 +369,8 @@ console.log("JQ IS ALIVE");
   // $('body').append(sound);
 
   gameBricks();
+  ensureStoredScores();
+  getScore();
 
 
 //push to local storage, use local storage to populate array via push
