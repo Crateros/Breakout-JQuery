@@ -16,6 +16,7 @@ console.log("JQ IS ALIVE");
   var intervalId = 0;
   var canvasMinX = 0;
   var canvasMaxX = 0;
+  var brokenBricks = 0;
   var bricks;
   var brickRows;
   var brickColumns;
@@ -302,8 +303,32 @@ console.log("JQ IS ALIVE");
         dy += 1;
       }
       bricks[row][col] = 0;
+      brokenBricks ++;
+      console.log(brokenBricks);
       scoreGame(row);
       $.playSound("sounds/BoopBrick");
+      if (brokenBricks >= 25) {
+        clearInterval(intervalId);
+        if ($("#currentScore").text() != "0") {
+          var tempArray = JSON.parse(localStorage.scores);
+          tempArray.push($("#currentScore").text());
+          localStorage.setItem("scores", JSON.stringify(tempArray));
+        }
+      getScore();
+      console.log("you won!");
+      var audioz = $("audio");
+        for(var i =0; i < audioz.length; i++) {
+          if (audioz[i].currentSrc == "file:///home/donne/Desktop/BreakOut%20JS/music/wind.mp3") {
+            audioz[i].pause();
+          }
+        }
+      setTimeout(function() {
+          $.playSound("music/gameover");
+          $("#youWin").addClass("animated");
+          $("#youWin").addClass("fadeIn");
+          $("#youWin").css("visibility", "visible");
+        }, 2000);
+      }
     }
     //x-axis LEFT & RIGHT collision
     if (x + dx + ballRadius > WIDTH || x + dx - ballRadius < 0){
